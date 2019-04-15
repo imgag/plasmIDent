@@ -1,9 +1,9 @@
 PlasmIdent
 ==========
 
-[![Build Status](https://travis-ci.org/caspargross/PlasmIdent.svg?branch=master)](https://travis-ci.org/caspargross/PlasmIdent)
+[![Build Status](https://travis-ci.org/caspargross/plasmIDent.svg?branch=master)](https://travis-ci.org/caspargross/plasmIDent)
 
-This pipeline idenfitifes circular plasmids in in bacterial genome assemblies by aligning nanopore sequencing reads to putative plasmids. When overlapping long reads are identified, the application further identifies charactersistics. 
+This pipeline idenfitifes circular plasmids in in bacterial genome assemblies by aligning long sequencing reads to putative plasmids. When overlapping long reads confirm circular plasmids,  resistance genes are identified and additional parameters calculated. 
 
 The pipeline includes the following steps:
 - Gene prediction with [Glimmer3](https://ccb.jhu.edu/software/glimmer/)
@@ -41,7 +41,7 @@ You can either get the latest version by cloning this repository
 git clone https://github.com/imgag/plasmIDent
 ```
 
-or download on of the [releases](https://github.com/caspargross/PlasmIdent/releases).
+or download on of the [releases](https://github.com/imgag/plasmIDent/releases).
 
 
 3) Download dependencies
