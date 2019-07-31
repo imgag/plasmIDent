@@ -420,15 +420,15 @@ process table{
 ================================================================================
 */
 def runParamCheck() {
-  if (params.minLength > params.seqPadding) {
+  if (params.minLength < params.seqPadding) {
 	log.info "Minimum contig length cannot be shorter then seqPadding. Please adjust parameters and restart"
   }
 }
 
 def getFiles(tsvFile) {
   // Extracts Read Files from TSV
-  if (workflow.profile in ['test', 'localtest'] ) {
-      inputFile = file("$workflow.projectDir/" + tsvFile)
+  if (workflow.profile.contains('test')) {
+      inputFile = file("$baseDir/" + tsvFile)
   } else {
       inputFile = file(tsvFile)
   }
@@ -443,8 +443,8 @@ def getFiles(tsvFile) {
 
 def returnFile(it) {
 // Return file if it exists and is readable
-  if (workflow.profile in ['test', 'localtest'] ) {
-      return(file("$workflow.projectDir/data/" + it))
+  if (workflow.profile.contains('test')) {
+    return(file("$workflow.projectDir/" + it))
   }
   if (!file(it).exists()) exit 1, "Missing file in TSV file: ${it}, see --help for more information"
   if (!file(it).canRead()) exit 1, "Cannot read file in TSV file: ${it}"

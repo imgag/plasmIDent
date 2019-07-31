@@ -1,1 +1,1 @@
-testData	test_assembly.fasta	test_reads.fastq.gz
+testData	data/test_assembly.fasta	data/test_reads.fastq.gz
