@@ -403,7 +403,7 @@ process table{
     set id, gc, assembly, cov, type, rgi from table_data
 
     output:
-    file("${id}_summary.csv")
+    file("${id}_summary.csv") into summary_tsvs
 
     script:
     """
@@ -413,6 +413,25 @@ process table{
     """
 }
 
+process summay_samples {
+// Create summary table with all samples
+publishDir "${params.outDir}", mode: 'copy'
+
+input: 
+path tsvs from summary_tsvs
+
+output:
+path "rgi_summary_samples.tsv"
+
+script:
+"""
+${env}
+06_summary_samples.R ${tsvs} > rgi_summary_samples.tsv
+
+"""
+
+}
+//summary_data.view()
 
 /*
 ================================================================================
