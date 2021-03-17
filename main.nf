@@ -240,6 +240,7 @@ process format_data_rgi {
 
     output:
     set id, file("rgi.txt"), file("rgi_span.txt") into circos_data_rgi
+    //set id, file("rgi_summary.txt") into rgi_summary_ch
 
     script:
     """
@@ -413,21 +414,26 @@ process table{
     """
 }
 
-process summay_samples {
+aro_index = Channel.fromPath("${baseDir}/data/aro_index.csv")
+
+process summary_samples {
 // Create summary table with all samples
 publishDir "${params.outDir}", mode: 'copy'
 
 input: 
 path tsvs from summary_tsvs
+file 'aro_index'
+// aro_index.csv is in the docker image
 
 output:
 path "rgi_summary_samples.tsv"
+path "rgi_summary_samples.html"
+// out files produced by R script
 
 script:
 """
 ${env}
-06_summary_samples.R ${tsvs} > rgi_summary_samples.tsv
-
+06_summary_samples.R ${tsvs}
 """
 
 }
