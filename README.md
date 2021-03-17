@@ -63,12 +63,18 @@ Run Application
 
 The pipeline requires an input file with a sample id (string) and paths for the assembly file in .fasta format and long reads in `.fastq` or `.fastq.gz`. The paths can either be absolute or relative to the launch directory. In normal configuration (with docker), it is not possible to follow symbolic links. 
 
-The file must be tab-separated and have the following format
+The file must be tab-separated with three columns:
 
-|id |assembly|lr|
-|---|--------|--|
-|myid1| /path/to/assembly1.fasta|/path/to/reads1.fastq.gz|
-|myid2| /path/to/assembly2.fasta|/path/to/reads2.fastq.gz|
+```
+sample_id	assembly_fasta	longread_fq
+```
+
+The file must not have a header line and start directly with the data. Here is an example file: 
+
+```
+myid1	/path/to/assembly1.fasta	/path/to/reads1.fastq.gz
+myid2	/path/to/assembly2.fasta	/path/to/reads2.fastq.gz
+```
 
 The pipeline is started with the following command:
 
