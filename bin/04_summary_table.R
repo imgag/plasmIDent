@@ -46,7 +46,9 @@ getID <- function(s) {
   return(contig)
 }
 
-dt_ar <- dt_rgi[, .(contig = sapply(Contig, getID), ar_genes = sapply(Best_Hit_ARO, toString)),]
+dt_ar <- dt_rgi[, .(contig = sapply(Contig, getID), 
+                    ar_genes = sapply(Best_Hit_ARO, toString), 
+                    aro = sapply(ARO, toString)),]
 
 # Put it all together
 dt <- dt_gc[,.(gc = mean(gc)), by = contig]

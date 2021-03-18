@@ -18,7 +18,7 @@ The conda environment containing all the dependencies for this pipeline can be i
 You need [miniconda](https://conda.io/miniconda.html) installed on you machine. You can then create the new environment with:
 
 ```
-conda create -f /env/PI_env.yml 
+conda env create -f env/PI_env.yml 
 ```
 
 Additionally you need to run the following commands:
