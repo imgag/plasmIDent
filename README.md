@@ -3,6 +3,15 @@ PlasmIdent
 
 [![Build Status](https://travis-ci.org/caspargross/plasmIDent.svg?branch=master)](https://travis-ci.org/caspargross/plasmIDent)
 
+## Changelog
+
+### v1.1
+
+- Migrated the pipeline to Nextflow DSL2 and updated configuration for current Nextflow releases.
+- Simplified the Conda environment and modernized the Docker image build on top of Miniforge.
+- Added CI coverage for environment creation and test-pipeline execution.
+- Fixed plasmid summary generation and added combined cross-sample resistance summary outputs.
+
 This pipeline idenfitifes circular plasmids in in bacterial genome assemblies by aligning long sequencing reads to putative plasmids. When overlapping long reads confirm circular plasmids,  resistance genes are identified and additional parameters calculated. 
 
 The pipeline includes the following steps:
