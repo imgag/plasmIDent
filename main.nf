@@ -38,8 +38,8 @@ process filter_reads {
     else
         """
         ${params.env}
-        len=\$(grep -v '>' ${assembly} | wc -c)
-        nbases=\$(expr \$len * ${params.mappingCov})
+        len=\$(awk '!/^>/ { total += length(\$0) } END { print total + 0 }' ${assembly})
+        nbases=\$((len * ${params.mappingCov}))
         filtlong -t \$nbases --length_weight 0 ${lr} > reads_filtered.fastq
         """
 }
@@ -47,7 +47,7 @@ process filter_reads {
 process save_plasmids {
 // Save plasmids as a separate fasta file
     tag { id + ":" + contigName }
-    publishDir({ "${params.outDir}/${id}/plasmids/" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/plasmids/" }, mode: 'copy'
 
     input:
     tuple val(id), path(lr), val(contigName), val(length), val(sequence)
@@ -89,7 +89,7 @@ process pad_plasmids {
 process combine_padded_contigs {
 // Recombines padded contigs into a single fasta
     tag { id + ":" + contigName }
-    publishDir({ "${params.outDir}/${id}/alignment/" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/alignment/" }, mode: 'copy'
 
     input:
     tuple val(id), path(assembly), val(lr), val(contigName)
@@ -105,7 +105,7 @@ process combine_padded_contigs {
 
 process map_longreads {
 // Use minimap2 to align longreads to padded contigs
-    publishDir({ "${params.outDir}/${id}/alignment/" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/alignment/" }, mode: 'copy'
     tag { id }
 
     input:
@@ -160,7 +160,7 @@ process find_ovlp_reads {
 
 process identify_resistance_genes {
 // Find antibiotic resistance genes in the CARD database
-    publishDir({ "${params.outDir}/${id}/resistances" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/resistances" }, mode: 'copy'
     tag { id }
 
     input:
@@ -195,7 +195,7 @@ process format_data_rgi {
 
 process mos_depth {
 // Calculate coverage depth
-    publishDir({ "${params.outDir}/${id}/coverage" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/coverage" }, mode: 'copy'
     tag { id }
 
     input:
@@ -239,7 +239,7 @@ process format_data_cov {
 
 process calcGC {
 // Calculate gc conten
-    publishDir({ "${params.outDir}/${id}/gc" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/gc" }, mode: 'copy'
     tag { id }
 
     input:
@@ -258,7 +258,7 @@ process calcGC {
 
 process glimmer {
 // Predict gene positions with glimmer3
-    publishDir({ "${params.outDir}/${id}/genes" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/genes" }, mode: 'copy'
     tag { id }
 
     input:
@@ -297,7 +297,7 @@ process format_glimmer {
 
 process circos{
 // Use the combined data to create circular plots
-    publishDir({ "${params.outDir}/${id}/plots" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/plots" }, mode: 'copy'
     tag { id + ":" + contigID }
 
     input:
@@ -319,7 +319,7 @@ process circos{
 
 process table{
 // Create table with contig informations
-    publishDir({ "${params.outDir}/${id}/" }, mode: 'copy')
+    publishDir path: { "${params.outDir}/${id}/" }, mode: 'copy'
     tag { id }
 
     input:
