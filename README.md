@@ -54,8 +54,8 @@ docker pull caspargross/plasmident
 
 Alternative dependency installations:
 
-- [Singularity Container](docs/alternative_installation.md#singularity_container)
-- [Use conda environment (no docker)](docs/alternative_installation.md#conda_environment)
+- [Singularity Container](doc/alternative_installation.md#singularity_container)
+- [Use conda environment (no docker)](doc/alternative_installation.md#conda_environment)
 
 
 Run Application
