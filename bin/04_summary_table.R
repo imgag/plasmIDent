@@ -39,10 +39,7 @@ val_cov <- dt_cov[(contig %in% id), .(cov = median(cov)/baseCov), by = contig]
 # Extract resistance genes
 getID <- function(s) {
   #s <- "VBDFDF_3_1_234"
-  split <- transpose(strsplit(s, "_"))
-  n <- length(split)
-  contig <- (paste(split[1:n-1], collapse ="_"))
-  return(contig)
+  sub("_[^_]+$", "", s)
 }
 
 dt_ar <- dt_rgi[, .(contig = sapply(Contig, getID), ar_genes = sapply(Best_Hit_ARO, toString)),]
