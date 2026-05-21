@@ -1,7 +1,5 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl=2
-
 /* 
 ===============================================================================
                               P L A S M I D E N T  
@@ -341,7 +339,7 @@ workflow {
     if (params.version) exit 0, pipelineMessage()
     if (!params.input) exit 0, helpMessage()
 
-    def inputFile = workflow.profile.contains('test') ? file("$baseDir/" + params.input) : file(params.input)
+    def inputFile = workflow.profile.contains('test') ? file("${workflow.projectDir}/" + params.input) : file(params.input)
     def samples = getFiles(params.input)
 
     startMessage(inputFile)
@@ -443,7 +441,7 @@ def getFiles(tsvFile) {
   // Extracts Read Files from TSV
     def inputFile
   if (workflow.profile.contains('test')) {
-      inputFile = file("$baseDir/" + tsvFile)
+      inputFile = file("${workflow.projectDir}/" + tsvFile)
   } else {
       inputFile = file(tsvFile)
   }
