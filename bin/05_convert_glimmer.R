@@ -46,8 +46,7 @@ for (line in lines) {
   }
 }
 
-close(outFile)  
-close(outFile)  
+close(outFile)
 
   
 
