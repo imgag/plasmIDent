@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Conda environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          activate-environment: PI_env
+          auto-activate-base: false
+          environment-file: env/PI_env.yml
+          use-mamba: true
+
+      - name: Install Nextflow
+        shell: bash -el {0}
+        run: |
+          curl -s https://get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/nextflow
+          nextflow -version
+
+      - name: Verify toolchain and pipeline preview
+        shell: bash -el {0}
+        run: |
+          rgi --version
+          nextflow run main.nf -preview -profile test
+
+      - name: Run reduced test pipeline
+        shell: bash -el {0}
+        run: |
+          if grep -q '"_placeholder": true' data/test_card/card.json; then
+            echo "Placeholder CARD JSON detected; skipping full pipeline run until a reduced CARD fixture is added."
+            exit 0
+          fi
+
+          nextflow run main.nf -profile test

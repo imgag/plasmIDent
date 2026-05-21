@@ -170,10 +170,18 @@ process identify_resistance_genes {
     tuple val(id), path("${id}_rgi.txt"), emit: rgi
 
     script:
-    """
-    ${params.env}
-    rgi main -i ${assembly} -n ${task.cpus} -o ${id}_rgi
-    """
+    def cardJson = params.cardJson ? file(params.cardJson).toAbsolutePath() : null
+    if (cardJson)
+        """
+        ${params.env}
+        rgi load --card_json ${cardJson} --local
+        rgi main -i ${assembly} -n ${task.cpus} -o ${id}_rgi --local
+        """
+    else
+        """
+        ${params.env}
+        rgi main -i ${assembly} -n ${task.cpus} -o ${id}_rgi
+        """
 }
 
 process format_data_rgi {
