@@ -423,10 +423,32 @@ workflow {
         .join(table_data_cov)
         .join(rgi_channels.table_data_rgi)
 
+    def summary_tsvs = table(table_data)
+    def aro_index = Channel.value(file("${baseDir}/data/aro_index.tsv"))
+
     circos(combined_data)
-    table(table_data)
+    summary_samples(summary_tsvs.collect().filter { !it.isEmpty() }, aro_index)
 }
 
+process summary_samples {
+// Create summary tables across all samples
+    publishDir path: { params.outDir }, mode: 'copy'
+
+    input:
+    path tsvs
+    path aro_index
+
+    output:
+    path 'rgi_summary_samples.tsv'
+    path 'rgi_summary_samples.html'
+
+    script:
+    def summaryFiles = tsvs.collect { it.name }.join(' ')
+    """
+    ${params.env}
+    06_summary_samples.R ${aro_index} ${summaryFiles}
+    """
+}
 
 /*
 ================================================================================

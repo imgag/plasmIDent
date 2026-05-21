@@ -44,7 +44,8 @@ getID <- function(s) {
 
 dt_ar <- dt_rgi[, .(
   contig = vapply(Contig, getID, character(1)),
-  ar_genes = vapply(Best_Hit_ARO, toString, character(1))
+  ar_genes = vapply(Best_Hit_ARO, toString, character(1)),
+  aro = vapply(ARO, toString, character(1))
 )]
 dt_ar[, contig := as.character(contig)]
 

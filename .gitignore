@@ -1,0 +1,5 @@
+.nextflow*
+out_*
+work
+.Rhistory
+.DS_Store
