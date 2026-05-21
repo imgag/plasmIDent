@@ -42,11 +42,15 @@ getID <- function(s) {
   sub("_[^_]+$", "", s)
 }
 
-dt_ar <- dt_rgi[, .(contig = sapply(Contig, getID), ar_genes = sapply(Best_Hit_ARO, toString)),]
+dt_ar <- dt_rgi[, .(
+  contig = vapply(Contig, getID, character(1)),
+  ar_genes = vapply(Best_Hit_ARO, toString, character(1))
+)]
+dt_ar[, contig := as.character(contig)]
 
 # Put it all together
 dt <- dt_gc[,.(gc = mean(gc)), by = contig]
-dt[, length := getLength(seq[contig]) - 2*(padding),]
+dt[, length := vapply(seq[contig], getLength, integer(1)) - 2 * padding]
 dt <- dt[val_cov, on = "contig"]
 
 dt[,cov := round(cov, 2),]
