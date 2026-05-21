@@ -5,7 +5,6 @@
 ######################
 
 require(seqinr)
-require(data.table)
 
 # Calculates the GC content in a sliding window for a character vector
 GCwindow <- function(seq, width, circular=T, bases=c("c", "g")) {

@@ -12,19 +12,17 @@ contigID <- ""
 splitLine <- ""
 strand <- ""
 
-require(stringr)
-
 
 outFile <- file("genes.txt", "w")
 
 for (line in lines) {
   if (startsWith(line, ">")) {
-    contigID <- unlist(str_split(line, ">"))[2]
+    contigID <- sub("^>", "", line)
     #contigID <- str_replace(contigID, '_', '-')
-    contigID <- str_split(contigID, ' ')[[1]][1]
+    contigID <- strsplit(contigID, ' ')[[1]][1]
   } else {
-    line <- str_squish(line)
-    splitLine <- unlist(str_split(line, " "))
+    line <- trimws(gsub("\\s+", " ", line))
+    splitLine <- strsplit(line, " ")[[1]]
     
     start <- as.integer(splitLine[2])
     stop <- as.integer(splitLine[3])
@@ -49,5 +47,7 @@ for (line in lines) {
 }
 
 close(outFile)  
+close(outFile)  
+
   
-  
+

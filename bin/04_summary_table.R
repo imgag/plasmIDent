@@ -7,7 +7,6 @@
 
 require(data.table)
 require(seqinr)
-require(ggplot2)
 
 # Read data
 args <- commandArgs(trailingOnly=TRUE)

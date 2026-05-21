@@ -15,10 +15,22 @@ nextflow run PlasmIdent/ --input my_input.tsv -profile singularity
 
 The conda environment containing all the dependencies for this pipeline can be installed with the config file `env/PI_env.yml`
 
-You need [miniconda](https://conda.io/miniconda.html) installed on you machine. You can then create the new environment with:
+You need [miniconda](https://conda.io/miniconda.html) or [mamba](https://mamba.readthedocs.io/) installed on your machine. You can then create the new environment with:
 
 ```
-conda create -f /env/PI_env.yml 
+mamba env create -f env/PI_env.yml
+```
+
+If you are using plain conda instead of mamba, use:
+
+```
+conda env create -f env/PI_env.yml
+```
+
+On Apple Silicon, the `glimmer` package is not currently available as a native `osx-arm64` Conda package. In that case, prefer the container profile, or create the environment under Linux compatibility:
+
+```
+CONDA_SUBDIR=linux-64 mamba env create -f env/PI_env.yml
 ```
 
 Additionally you need to run the following commands:
@@ -32,7 +44,7 @@ ln -s /opt/conda/envs/PI_env/lib/libwebp.so.6 /opt/conda/envs/PI_env/lib/libwebp
 2) Download and install CARD antibiotic resistance database
 
 ```
-wget -q -O card-data.tar.bz2 https://card.mcmaster.ca/latest/data && tar xfvj card-data.tar.bz2 && bash && source activate PI_env && rgi load -i card.json
+wget -q -O card-data.tar.bz2 https://card.mcmaster.ca/latest/data && tar xfvj card-data.tar.bz2 && bash && source "$(conda info --base)/etc/profile.d/conda.sh" && conda activate PI_env && rgi load -i card.json
 ```
 
 You should then be able to run the pipeline without docker by adding the parameter `-profile local`
